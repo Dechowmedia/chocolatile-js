@@ -7,13 +7,44 @@ var gameObject = new GameObject();
 var EntityObject = function(type, x, y){
 	this.health = 100;
 	this.damage = 10;
-	this.type = type;
 	this.pos = new Point(x, y);
 	this.dir = 0;
+
+	this.draw = function(game){
+
+		var vW = game.config.screen.vW;
+		var vH = game.config.screen.vH;
+		var tileSize = game.config.screen.tileSize
+		var image = sprites[getSpriteByName("player")].image;
+
+		var playerX = game.player.pos.x;
+		var playerY = game.player.pos.y;
+
+		var startX = playerX - Math.round(vW/2);
+      	var startY = playerY - Math.round(vH/2);
+
+
+		var thisX = this.pos.x-startX;
+		var thisY = this.pos.y-startY;
+
+
+
+		game.context.drawImage(image,0, this.dir*tileSize, tileSize, tileSize, thisX*tileSize,thisY*tileSize,tileSize,tileSize);
+
+		
+		//game.context.drawImage(image,0, this.dir*tileSize, tileSize, tileSize, this.pos.x*tileSize,this.pos.y*tileSize,tileSize,tileSize);
+	}
 
 	$.extend(this, gameObject);
 }
 var entityObject = new EntityObject();
+
+
+//AN IDEA
+//
+//new Entity("player", x, y);
+//$.extend(this, entities[type]);
+//var entities = {}
 
 
 var PlayerObject = function(x,y){
@@ -30,17 +61,6 @@ var PlayerObject = function(x,y){
 		down: false,
 		hit: false
 	}
-
-
-	this.draw = function(game){
-		var tileSize = game.config.screen.tileSize
-		// game.context.fillStyle="#44601A";
-		// game.context.fillRect();
-		var image = sprites[getSpriteByName("player")].image;
-		game.context.drawImage(image,  0, this.dir*tileSize, tileSize, tileSize, this.pos.x*tileSize,this.pos.y*tileSize,tileSize,tileSize);
-
-	}
-
 	
 	this.move = function(game){
 
@@ -69,29 +89,34 @@ var PlayerObject = function(x,y){
 	}
 
 	this.attack = function(game){
-		// if (this.keyStates.hit == true){
-		// 	console.log("ATTACK BUTTON");
-		// 	if (collision(game.player, game.enemy)){
-		// 		game.enemy.health -= game.player.damage;
-		// 		console.log(game.enemy.health);
-		// 	}
-		// }
 
-		// return false;
+		if (this.keyStates.hit == false) {
+			var isHitting = false;
+		}
 
-		var time = Date.now();
-		var cooldown = 1000;
-		var attackCount = -1000;
-		if (this.keyStates.hit == true && time > (cooldown + attackCount) ){
-			console.log("timer hit the spot");
-			if (collision(game.player, game.enemy)){
+		if (this.keyStates.hit == true){
+			console.log("ATTACK BUTTON");
+			if (collision(game.player, game.enemy) && isHitting == false){
 				game.enemy.health -= game.player.damage;
 				console.log(game.enemy.health);
+				isHitting = true;
+			} else {
+				console.log("Cool down buddy");
 			}
 		}
 
-	} 
+		return false;
 
+
+		// if (this.keyStates.hit == true && collision(game.player, game.enemy)){
+		// 	console.log("timer hit the spot");
+
+//				console.log("YES IM HERE!")
+				// window.setInterval(function(){
+				// 	game.enemy.health -= game.player.damage;
+				// 	console.log(game.enemy.health);
+				// }, 5000);
+			}
 
 	// function DirectionUpdate(){
 	// 	//Update direction based on movement
@@ -129,16 +154,8 @@ var EnemyObject = function(x,y){
 	$.extend(this, entityObject);
 	this.type = 'enemy';
 	this.damage = 5;
-	this.xPos = x;
-	this.yPos = y;
+	this.pos = new Point(x, y);
 	this.sprite = 0;
-
-	this.draw = function(game){
-		var tileSize = game.config.screen.tileSize
-		var image = sprites[getSpriteByName("player")].image;
-		game.context.drawImage(image,0, this.dir*tileSize, tileSize, tileSize, this.xPos*tileSize,this.yPos*tileSize,tileSize,tileSize);
-	}
-
 
 	this.hit = function(){
 		game.player.health -= this.damage
@@ -154,9 +171,9 @@ var EnemyObject = function(x,y){
 
 	$(document).bind('update',
 		function(){
-			//var col = new Collision(that, playerObject);
-			//col.checkTile(); 
-			//Collision(that, playerObject).checkTile()	
+			// var col = new Collision(that, playerObject);
+			// col.checkTile(); 
+			// Collision(that, playerObject).checkTile()	
 		
 			// if(collision(game.enemy, game.player)){
 			// 	that.hit();

@@ -36,19 +36,19 @@ function Timer(now){
 
 function collision(o1, o2){ 
 
-  if(o1.xPos+1 == o2.xPos && o1.yPos == o2.yPos){
+  if(o1.pos.x+1 == o2.pos.x && o1.pos.y == o2.pos.y){
       return true;
   }
 
-  if(o1.xPos-1 == o2.xPos && o1.yPos == o2.yPos){
+  if(o1.pos.x-1 == o2.pos.x && o1.pos.y == o2.pos.y){
       return true;
   }
 
-  if(o1.yPos+1 == o2.yPos && o1.xPos == o2.xPos){
+  if(o1.pos.y+1 == o2.pos.y && o1.pos.x == o2.pos.x){
       return true;
   }
 
-  if(o1.yPos-1 == o2.yPos && o1.xPos == o2.xPos){
+  if(o1.pos.y-1 == o2.pos.y && o1.pos.x == o2.pos.x){
       return true;
   }
 

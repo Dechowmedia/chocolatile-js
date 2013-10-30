@@ -4,7 +4,7 @@
  * This is here we will be checking keystrokes.
  */
 
-console.log("%cChocolate V0.01", "color:white;background-color:brown;font-size:24px;");
+console.log("%cChocolate V0.01", "color:white;background-color:#401E03;font-size:24px;");
 console.log("%cVersion: Andy", "font-size:18px;background-color:black;color:white;");
 var game;
 
@@ -33,7 +33,9 @@ function animate(){
 var gameConfig = {
 	screen: {
 		canvas: 'gameFrame',
-		tileSize: 32
+		tileSize: 32,
+    vW: 13,
+    vH: 9
 	}
 }
 
@@ -64,8 +66,8 @@ function Game(config, level){
 
     this.mapWidth = this.level[0].length;
     this.mapHeight = this.level.length;
-    canvas.width = tileSize*this.mapWidth;
-    canvas.height = tileSize*this.mapHeight;
+    canvas.width = tileSize*this.config.screen.vW;
+    canvas.height = tileSize*this.config.screen.vH;
 
     this.enemy = new EnemyObject(6, 3);
     this.player = new PlayerObject(5, 5);
@@ -95,6 +97,8 @@ function Game(config, level){
       console.info("%cStarting engine!", "color: blue;");
     }
 
+
+
     /**
      * ReDraws for every frame the canvas.
      * Draws the map.
@@ -107,23 +111,42 @@ function Game(config, level){
 
       var tileSize = this.config.screen.tileSize
 
-      for(y=0; y<this.mapHeight; y++){
+      /**
+       * Viewport
+       * Defines the viewport that is drawn on the canvas
+       */
+      var vW = this.config.screen.vW;
+      var vH = this.config.screen.vH;
+      var startX = this.player.pos.x - Math.round(vW/2);
+      var endX = startX + vW;
+      var startY = this.player.pos.y - Math.round(vH/2);
+      var endY = startY + vH;
 
-        for(x=0; x<this.mapWidth; x++){
 
-          //paint block
-          var tile = this.level[y][x];
-          if(tile == 0){
-            this.context.fillStyle = "#000000";
-            this.context.fillRect(drawX, drawY, tileSize, tileSize);
+      for(y=startY; y<endY; y++){
 
-          } else if(tile == 1){
-            this.context.fillStyle = "#00FF00";
+        for(x=startX; x<endX; x++){
+
+          if(x>=0 && x<this.level[0].length && y>=0 && y<this.level.length){
+            //paint block
+            var tile = this.level[y][x];
+            if(tile == 0){
+              this.context.fillStyle = "#000000";
+              this.context.fillRect(drawX, drawY, tileSize, tileSize);
+
+            } else if(tile == 1){
+              this.context.fillStyle = "#00FF00";
+              this.context.fillRect(drawX, drawY, tileSize, tileSize);
+            }
+
+            
+          } else {
+            this.context.fillStyle = "#CCCCCC";
             this.context.fillRect(drawX, drawY, tileSize, tileSize);
           }
 
+          
           drawX = drawX+tileSize;
-
         }
 
         drawY = drawY+tileSize;

@@ -3,6 +3,25 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Game Engine (MVC STYLE)</title>
+
+	<style>
+		*{
+			font-family: sans-serif;
+		}
+		
+		body{
+			background-color: #006598;
+			margin: auto;
+			text-align: center;
+			color: #FFF;
+		}
+		
+		canvas{
+			border:8px solid #CCC;
+			margin: 0px auto;
+			display: block;
+		}
+	</style>
 </head>
 <body>
 	<h1>The Game!!</h1>
@@ -14,11 +33,16 @@
 		</div>
 	</div>
 <script src="js/libs/jquery.js"></script>
-<!-- <script src="js/libs/underscore.js"></script>
-<script src="js/libs/backbone.js"></script>
-<script src="js/libs/backbone-assoc.js"></script>
 
- -->
+<!--
+	Read this for more info on base.js (im converting my extends to this method soon) [http://www.ibm.com/developerworks/web/library/wa-objectorientedjs/#list4]
+
+	<script src="js/libs/base.js"></script>
+
+	Converting to Kibo soon too:
+
+	<script src="js/libs/kibo.js"
+-->
 <script src="js/views.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/helpers.js"></script>
